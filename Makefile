@@ -25,6 +25,7 @@ define removing
 endef
 
 SRCS			= $(addprefix srcs/, \
+				  	routine.c \
 			  		main.c \
 					)
 
