@@ -1,11 +1,5 @@
 WIDTH= 79
 
-define building
-	@printf '%s\n' "-> Building $1"
-	@make -sC $1 > /dev/null
-	@echo "√"
-endef
-
 define compiling
 	@printf '%s\n' "-> Compiling $1"
 	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $1 -o $2
@@ -30,70 +24,50 @@ define removing
 	@echo "√"
 endef
 
-SRCS		= $(addprefix srcs/, \
-			  	parsing.c \
-			  	stack.c \
-				stackop.c \
-				sortsmallest.c \
-				sortsmall.c \
-				costsort.c \
-				utils.c \
-				sort.c \
-			  	main.c \
-				)
+SRCS			= $(addprefix srcs/, \
+			  		main.c \
+					)
 
-BONUS		= $(addprefix srcs/, \
-			  	parsing.c \
-			  	stack.c \
-				stackop.c \
-				utils.c \
-				sortsmallest.c \
-				sortsmall.c \
-				costsort.c \
-				sort.c \
-			 	get_next_line_utils.c \
-				get_next_line.c \
-				checker_utils.c \
-			  	checker.c \
-			  )
+BONUS			= $(addprefix srcs/, \
+			  		)
 
-OBJS		= $(SRCS:.c=.o)
+OBJS			= $(SRCS:.c=.o)
 
-BONUS_OBJS	= $(BONUS:.c=.o)
+BONUS_OBJS		= $(BONUS:.c=.o)
 
-NAME		= push_swap
+NAME			= philo
 
-RM			= rm -f
+NAME_BONUS		= philo_bonus
 
-CC			= cc
+RM				= rm -f
 
-CFLAGS		= -Wall -Wextra -Werror -g -fsanitize=address
+CC				= cc
 
-CPPFLAGS	= -Iincludes
+CFLAGS			= -Wall -Wextra -Werror -g -fsanitize=address
 
-LIBS		= ./libft/libft.a
+CPPFLAGS		= -Iincludes
+
+LIBS			= -lpthread
 
 %.o : %.c
-			$(call compiling,$<,$(<:.c=.o),0)
+				$(call compiling,$<,$(<:.c=.o),0)
 
-${NAME}:	$(OBJS)
-			$(call building,libft)
-			$(call finishing,$(NAME), $(OBJS))
+${NAME}:		$(OBJS)
+				$(call finishing,$(NAME), $(OBJS))
 
-checker:	$(NAME) $(BONUS_OBJS)
-			$(call finishing,checker,$(BONUS_OBJS))
+${NAME_BONUS}:	$(NAME) $(BONUS_OBJS)
+				$(call finishing,$(NAME_BONUS),$(BONUS_OBJS))
 
-all:		$(NAME)
+all:			$(NAME)
 
-bonus:		checker
+bonus:			$(NAME_BONUS)
 
 clean:	
-			$(call removing,$(OBJS))
-			$(call removing,$(BONUS_OBJS))
+				$(call removing,$(OBJS))
+				$(call removing,$(BONUS_OBJS))
 
-fclean:		clean
-			$(call cleaning,libft,fclean)
-			$(call removing,${NAME})
-			$(call removing,checker)
+fclean:			clean
+				$(call removing,$(NAME))
+				$(call removing,$(NAME_BONUS))
 
-re:			fclean all
+re:				fclean all
