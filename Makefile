@@ -1,25 +1,25 @@
 WIDTH= 79
 
 define compiling
-	@printf '%s\n' "-> Compiling $1"
+	@printf '%s\t' "-> Compiling $1"
 	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $1 -o $2
 	@echo "√"
 endef
 
 define finishing
-	@printf '%s\n' "-> Finishing $1"
+	@printf '%s\t' "-> Finishing $1"
 	@$(CC) $(CFLAGS) $(CPPFLAGS) $2 -o $1 $(LIBS)
 	@echo "√"
 endef
 
 define cleaning
-	@printf '%s\n' "-> Cleaning $1"
+	@printf '%s\t' "-> Cleaning $1"
 	@make $2 -sC $1 > /dev/null
 	@echo "√"
 endef
 
 define removing
-	@printf '%s\n' "-> Removing $1"
+	@printf '%s\t' "-> Removing $1"
 	@$(RM) $1 > /dev/null
 	@echo "√"
 endef

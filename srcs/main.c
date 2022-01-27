@@ -6,7 +6,7 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 09:54:52 by alemarch          #+#    #+#             */
-/*   Updated: 2022/01/26 14:58:17 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/01/27 18:40:17 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ t_table	*init_table(int ac, char **av)
 
 	table = malloc(sizeof(t_table));
 	table->timestamp = get_timenow();
-	if (!table || ac < 5 || ft_atol(av[1]) <= 0 || ft_atol(av[2]) < 0
-		|| ft_atol(av[3]) < 0 || ft_atol(av[4]) < 0)
+	if (!table || ac < 5 || ft_atol(av[1]) <= 0 || ft_atol(av[2]) <= 0
+		|| ft_atol(av[3]) <= 0 || ft_atol(av[4]) <= 0)
 	{
 		free(table);
 		return (NULL);
@@ -37,7 +37,7 @@ t_table	*init_table(int ac, char **av)
 	table->t_die = (unsigned int)ft_atol(av[2]);
 	table->t_eat = (unsigned int)ft_atol(av[3]);
 	table->t_sleep = (unsigned int)ft_atol(av[4]);
-	if (av[5] && (unsigned int)ft_atol(av[5]) < 0)
+	if (av[5] && (int)ft_atol(av[5]) <= 0)
 	{
 		free(table);
 		return (NULL);
@@ -49,37 +49,24 @@ t_table	*init_table(int ac, char **av)
 	return (table);
 }
 
-static void	init_philo(t_philo philo, int i)
-{
-	philo.id = i;
-	philo.amount_eaten = 0;
-	philo.last_eat = -1;
-	philo.last_action = -1;
-}
-
 int	sit_philo(t_table *table)
 {
-	int	i;
+	int		i;
 
 	i = 0;
-	if (pthread_create(&table->philo[i].thread, NULL, (void *)printf, "coucou") != 0)
-		return (1);
-	table->philo[i].lfork = table->forks[table->nb_philo - 1];
-	table->philo[i].rfork = table->forks[i + 1];
-	i++;
-	while (i < table->nb_philo - 1)
+	while (i < table->nb_philo)
 	{
-		if (pthread_create(&table->philo[i].thread, NULL, (void *)printf, "coucou") != 0)
+		table->philo[i].id = i;
+		table->philo[i].lfork = table->forks[i];
+		if (i < table->nb_philo - 1)
+			table->philo[i].rfork = table->forks[i + 1];
+		else
+			table->philo[i].rfork = table->forks[0];
+		if (pthread_create(&table->philo[i].thread, NULL, &routine,
+				&table->philo[i]) != 0)
 			return (1);
-		init_philo(table->philo[i], i);
-		table->philo[i].lfork = table->forks[i - 1];
-		table->philo[i].rfork = table->forks[i + 1];
 		i++;
 	}
-	if (pthread_create(&table->philo[i].thread, NULL, (void *)printf, "coucou") != 0)
-		return (1);
-	table->philo[i].lfork = table->forks[i - 1];
-	table->philo[i].rfork = table->forks[0];
 	return (0);
 }
 
@@ -88,7 +75,7 @@ int	set_table(t_table *table)
 	int	i;
 
 	i = 0;
-	table->philo = malloc(table->nb_philo * sizeof(pthread_t));
+	table->philo = malloc((table->nb_philo + 1) * sizeof(t_philo));
 	if (!table->philo)
 		return (1);
 	table->forks = malloc(table->nb_philo * sizeof(pthread_mutex_t));
@@ -101,6 +88,11 @@ int	set_table(t_table *table)
 		pthread_mutex_init(&table->forks[i++], NULL);
 	if (sit_philo(table))
 		return (1);
+	while (i > 0)
+	{
+		pthread_join(table->philo[i].thread, NULL);
+		i--;
+	}
 	return (0);
 }
 
@@ -114,12 +106,6 @@ int	main(int ac, char **av)
 		write(2, "Argument error\n", 15);
 		return (22);
 	}
-	printf("nb_philo: %u\n", table->nb_philo);
-	printf("t_die: %u\n", table->t_die);
-	printf("t_eat: %u\n", table->t_eat);
-	printf("t_sleep: %u\n", table->t_sleep);
-	printf("eat_amount: %u\n", table->eat_amount);
-	printf("timestamp: %li\n", table->timestamp);
 	free(table);
 	return (0);
 }

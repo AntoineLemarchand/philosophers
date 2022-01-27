@@ -6,7 +6,7 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 10:00:37 by alemarch          #+#    #+#             */
-/*   Updated: 2022/01/26 14:55:47 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/01/27 18:30:27 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,7 @@ typedef struct s_table
 // utils.c
 long	ft_atol(const char *nptr);
 // routine.c
+void	*routine(void *data);
+// main.c
+unsigned int	get_timenow(void);
 #endif
