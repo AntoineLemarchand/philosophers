@@ -6,7 +6,7 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 09:54:52 by alemarch          #+#    #+#             */
-/*   Updated: 2022/01/27 18:40:17 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/01/27 20:20:14 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	set_table(t_table *table)
 		pthread_mutex_init(&table->forks[i++], NULL);
 	if (sit_philo(table))
 		return (1);
-	while (i > 0)
+	while (i >= 0)
 	{
 		pthread_join(table->philo[i].thread, NULL);
 		i--;
@@ -106,6 +106,8 @@ int	main(int ac, char **av)
 		write(2, "Argument error\n", 15);
 		return (22);
 	}
+	free(table->philo);
+	free(table->forks);
 	free(table);
 	return (0);
 }
