@@ -6,7 +6,7 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 10:43:22 by alemarch          #+#    #+#             */
-/*   Updated: 2022/01/27 20:09:44 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/01/27 22:06:32 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,19 @@
 void	*routine(void *args)
 {
 	t_philo	*philo;
+	int		amount_eaten;
 
+	amount_eaten = 0;
 	philo = (t_philo *)args;
-	int i = 0;
-	while (i < 20)
+	while (amount_eaten < philo->eat_amount)
 	{
 		printf("%u philo %i is eating\n", get_timenow(), philo->id);
-		usleep(100000);
+		usleep(philo->t_eat * 1000);
+		amount_eaten++;
 		printf("%u philo %i is sleeping\n", get_timenow(), philo->id);
-		usleep(100000);
+		usleep(philo->t_sleep * 1000);
 		printf("%u philo %i is thinking\n", get_timenow(), philo->id);
 		usleep(100000);
-		i++;
 	}
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 10:00:37 by alemarch          #+#    #+#             */
-/*   Updated: 2022/01/27 18:30:27 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/01/27 22:03:28 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,12 @@ typedef struct s_philo
 {
 	int				id;
 	pthread_t		thread;
-	int				amount_eaten;
-	long			last_eat;
-	long			last_action;
 	pthread_mutex_t	lfork;
 	pthread_mutex_t	rfork;
+	unsigned int	t_die;
+	unsigned int	t_eat;
+	unsigned int	t_sleep;
+	int				eat_amount;
 } t_philo;
 
 typedef struct s_table

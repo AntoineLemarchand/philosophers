@@ -6,7 +6,7 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 09:54:52 by alemarch          #+#    #+#             */
-/*   Updated: 2022/01/27 20:20:14 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/01/27 22:03:45 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,10 @@ int	sit_philo(t_table *table)
 	{
 		table->philo[i].id = i;
 		table->philo[i].lfork = table->forks[i];
+		table->philo[i].t_die = table->t_die;
+		table->philo[i].t_eat = table->t_eat;
+		table->philo[i].t_sleep = table->t_sleep;
+		table->philo[i].eat_amount = table->eat_amount;
 		if (i < table->nb_philo - 1)
 			table->philo[i].rfork = table->forks[i + 1];
 		else
