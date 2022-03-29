@@ -6,7 +6,7 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 10:43:22 by alemarch          #+#    #+#             */
-/*   Updated: 2022/03/29 15:27:34 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/03/29 15:29:45 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	tryeat(t_philo *philo, long last_eat)
 
 int	routine_helper(t_philo *philo, unsigned int last_eat)
 {
+	pthread_mutex_lock(&philo->status_mutex);
 	if (get_timenow() - last_eat >= philo->time[DIE])
 	{
 		philo->status = DEAD;
@@ -66,10 +67,7 @@ void	*routine(void *args)
 	if (philo->id % 2 == 0)
 		usleep(philo->time[EAT] / 10);
 	while (1)
-	{
-		pthread_mutex_lock(&philo->status_mutex);
 		if(routine_helper(philo, last_eat))
 			break;
-	}
 	return (NULL);
 }
