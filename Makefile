@@ -12,7 +12,7 @@ endef
 
 define cleaning
 	@echo -n Cleaning
-	@printf '\n\t%s\n' $1
+	@printf '%s\n' $1
 	@make $2 -sC $1 > /dev/null
 endef
 
@@ -23,6 +23,7 @@ endef
 
 SRCS			= $(addprefix srcs/, \
 				  	utils.c \
+				  	routine_utils.c \
 				  	routine.c \
 			  		main.c \
 					)
@@ -42,7 +43,7 @@ RM				= rm -f
 
 CC				= cc
 
-CFLAGS			= -Wall -Wextra -Werror -g
+CFLAGS			= -Wall -Wextra -Werror -g#-fsanitize=thread
 
 CPPFLAGS		= -Iincludes
 

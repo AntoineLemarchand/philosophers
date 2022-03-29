@@ -6,7 +6,7 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 10:00:37 by alemarch          #+#    #+#             */
-/*   Updated: 2022/03/29 11:17:58 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/03/29 12:15:13 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@
 # define EAT 1
 # define SLEEP 2
 
+# define DEAD 1
+# define FULL 2
+
 typedef struct s_philo 
 {
 	int				id;
@@ -32,13 +35,15 @@ typedef struct s_philo
 	int				eat_amount;
 	int				amount_eaten;
 	long			timestamp;
-	int				dead;
+	pthread_mutex_t	status_mutex;
+	int				status;
 } t_philo;
 
 typedef struct s_table
 {
 	t_philo			*philo;
 	pthread_mutex_t	*forks;
+	pthread_mutex_t	*status;
 	int				nb_philo;
 	unsigned int	time[3];
 	int				eat_amount;
@@ -47,6 +52,8 @@ typedef struct s_table
 
 // utils.c
 long	ft_atol(const char *nptr);
+// routine_utils.c
+int		end_check(t_table *table);
 // routine.c
 void	putstatus(int i, char *s);
 void	*routine(void *data);

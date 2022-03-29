@@ -6,7 +6,7 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 09:54:52 by alemarch          #+#    #+#             */
-/*   Updated: 2022/03/29 11:20:03 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/03/29 12:53:11 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ t_table	*init_table(int ac, char **av)
 void	init_philo(int i, t_table *table)
 {
 	table->philo[i].id = i;
-	table->philo[i].dead = 0;
+	table->philo[i].status = 0;
+	table->philo[i].status_mutex = table->status[i];
 	table->philo[i].lfork = table->forks[i];
 	table->philo[i].time[DIE] = table->time[DIE];
 	table->philo[i].time[EAT] = table->time[EAT];
@@ -64,32 +65,6 @@ void	init_philo(int i, t_table *table)
 		table->philo[i].rfork = table->forks[i + 1];
 	else
 		table->philo[i].rfork = table->forks[0];
-}
-
-int	end_check(t_table *table)
-{
-	int	i;
-	int end;
-
-	i = 0;
-	end = 0;
-	while (i < table->nb_philo)
-	{
-		if (table->philo[i].dead)
-		{
-			putstatus(i, "has died");
-			end = 1;
-			break;
-		}
-		i++;
-	}
-	i = 0;
-	while (i < table->nb_philo)
-	{
-		pthread_join(table->philo[i].thread, NULL);
-		pthread_mutex_destroy(&table->philo[i].lfork);
-	}
-	return (end);
 }
 
 int	sit_philo(t_table *table)
@@ -105,8 +80,7 @@ int	sit_philo(t_table *table)
 			return (1);
 		i++;
 	}
-	while (end_check(table))
-		;
+	end_check(table);
 	return (0);
 }
 
@@ -124,15 +98,20 @@ int	set_table(t_table *table)
 		free(table->philo);
 		return (1);
 	}
+	table->status = malloc(table->nb_philo * sizeof(pthread_mutex_t));
+	if (!table->status)
+	{
+		free(table->philo);
+		free(table->forks);
+		return (1);
+	}
 	while (i < table->nb_philo)
-		pthread_mutex_init(&table->forks[i++], NULL);
+	{
+		pthread_mutex_init(&table->forks[i], NULL);
+		pthread_mutex_init(&table->status[i++], NULL);
+	}
 	if (sit_philo(table))
 		return (1);
-	while (i >= 0)
-	{
-		pthread_join(table->philo[i].thread, NULL);
-		i--;
-	}
 	return (0);
 }
 
