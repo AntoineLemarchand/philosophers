@@ -6,7 +6,7 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 10:00:37 by alemarch          #+#    #+#             */
-/*   Updated: 2022/03/29 16:29:14 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/03/29 16:54:42 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef struct s_table
 long			ft_atol(const char *nptr);
 unsigned int	get_timenow(void);
 void			putstatus(int i, char *s);
+int				check_args(char	**av);
 // routine_utils.c
 void			end_check(t_table *table);
 // routine.c

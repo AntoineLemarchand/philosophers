@@ -6,7 +6,7 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 09:54:52 by alemarch          #+#    #+#             */
-/*   Updated: 2022/03/29 16:29:30 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/03/29 16:57:32 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@ static t_table	*init_table(int ac, char **av)
 
 	table = malloc(sizeof(t_table));
 	table->timestamp = get_timenow();
-	if (!table || ac < 5 || ft_atol(av[1]) <= 0 || ft_atol(av[2]) <= 0
-		|| ft_atol(av[3]) <= 0 || ft_atol(av[4]) <= 0)
+	if (!table || ac < 5 || check_args(av))
 	{
 		free(table);
 		return (NULL);
