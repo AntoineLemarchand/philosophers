@@ -1,27 +1,24 @@
 WIDTH= 79
 
 define compiling
-	@printf '%s\t' "-> Compiling $1"
+	@printf 'Compiling %s\n' $1
 	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $1 -o $2
-	@echo "√"
 endef
 
 define finishing
-	@printf '%s\t' "-> Finishing $1"
+	@printf 'Finishing %s\n' $1
 	@$(CC) $(CFLAGS) $(CPPFLAGS) $2 -o $1 $(LIBS)
-	@echo "√"
 endef
 
 define cleaning
-	@printf '%s\t' "-> Cleaning $1"
+	@echo -n Cleaning
+	@printf '\n\t%s\n' $1
 	@make $2 -sC $1 > /dev/null
-	@echo "√"
 endef
 
 define removing
-	@printf '%s\t' "-> Removing $1"
+	@printf ' %s ' $1
 	@$(RM) $1 > /dev/null
-	@echo "√"
 endef
 
 SRCS			= $(addprefix srcs/, \
@@ -65,7 +62,9 @@ all:			$(NAME)
 bonus:			$(NAME_BONUS)
 
 clean:	
+				@echo -n Removing
 				$(call removing,$(OBJS))
+				@echo -n Removing
 				$(call removing,$(BONUS_OBJS))
 
 fclean:			clean
