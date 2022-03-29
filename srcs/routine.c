@@ -6,7 +6,7 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 10:43:22 by alemarch          #+#    #+#             */
-/*   Updated: 2022/03/29 16:36:23 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/03/29 16:36:51 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	*routine(void *args)
 	if (philo->id % 2 == 0)
 		usleep(philo->time[EAT] / 10);
 	while (1)
-		if(routine_helper(philo))
-			break;
+		if (routine_helper(philo))
+			break ;
 	return (NULL);
 }

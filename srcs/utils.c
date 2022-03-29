@@ -6,7 +6,7 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 11:57:03 by alemarch          #+#    #+#             */
-/*   Updated: 2022/03/29 16:22:43 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/03/29 16:37:12 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	putstatus(int i, char *s)
 {
 	printf("%u %i %s\n", get_timenow(), i, s);
 }
-
 
 unsigned int	get_timenow(void)
 {

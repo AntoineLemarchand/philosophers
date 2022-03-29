@@ -6,7 +6,7 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 11:34:31 by alemarch          #+#    #+#             */
-/*   Updated: 2022/03/29 16:31:59 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/03/29 16:37:05 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ int	check_status(int i, int ate, t_table *table)
 		if (get_timenow() - table->philo[i].last_eat
 			> table->time[DIE])
 		{
-				putstatus(i, "has died");
-				pthread_mutex_unlock(&table->philo[i].is_eating);
-				return (1);
+			putstatus(i, "has died");
+			pthread_mutex_unlock(&table->philo[i].is_eating);
+			return (1);
 		}
 		else if (table->philo[i].eat_amount == table->philo[i].amount_eaten)
 			ate++;
