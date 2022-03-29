@@ -6,11 +6,20 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 11:57:03 by alemarch          #+#    #+#             */
-/*   Updated: 2022/01/26 11:57:21 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/03/29 14:53:41 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+unsigned int	get_timenow(void)
+{
+	struct timeval	curr;
+
+	if (gettimeofday(&curr, NULL) < 0)
+		return (0);
+	return (curr.tv_sec * 1000 + curr.tv_usec / 1000);
+}
 
 long	ft_atol(const char *nptr)
 {
@@ -36,4 +45,3 @@ long	ft_atol(const char *nptr)
 	else
 		return (-1);
 }
-

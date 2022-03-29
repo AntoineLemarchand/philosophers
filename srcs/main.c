@@ -6,24 +6,15 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 09:54:52 by alemarch          #+#    #+#             */
-/*   Updated: 2022/03/29 12:53:11 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/03/29 14:55:02 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-unsigned int	get_timenow(void)
-{
-	struct timeval	curr;
-
-	if (gettimeofday(&curr, NULL) < 0)
-		return (0);
-	return (curr.tv_sec * 1000 + curr.tv_usec / 1000);
-}
-
 t_table	*init_table(int ac, char **av)
 {
-	t_table *table;
+	t_table	*table;
 
 	table = malloc(sizeof(t_table));
 	table->timestamp = get_timenow();
@@ -45,7 +36,7 @@ t_table	*init_table(int ac, char **av)
 	else if (av[5])
 		table->eat_amount = (int)ft_atol(av[5]);
 	else
-		table->eat_amount = 0;
+		table->eat_amount = -1;
 	return (table);
 }
 
@@ -84,11 +75,8 @@ int	sit_philo(t_table *table)
 	return (0);
 }
 
-int	set_table(t_table *table)
+int	set_table(t_table *table, int i)
 {
-	int	i;
-
-	i = 0;
 	table->philo = malloc((table->nb_philo + 1) * sizeof(t_philo));
 	if (!table->philo)
 		return (1);
@@ -117,10 +105,10 @@ int	set_table(t_table *table)
 
 int	main(int ac, char **av)
 {
-	t_table *table;
+	t_table	*table;
 
 	table = init_table(ac, av);
-	if (!table || set_table(table))
+	if (!table || set_table(table, 0))
 	{
 		write(2, "Argument error\n", 15);
 		return (22);
