@@ -6,7 +6,7 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 10:00:37 by alemarch          #+#    #+#             */
-/*   Updated: 2022/03/29 15:01:30 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/03/29 16:29:14 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@
 # include <sys/time.h>
 # include <pthread.h>
 
-# define DIE 0
-# define EAT 1
-# define SLEEP 2
+# define EAT 0
+# define SLEEP 1
+# define DIE 2
 
 # define DEAD 1
 # define FULL 2
@@ -28,15 +28,15 @@
 typedef struct s_philo
 {
 	int				id;
+	unsigned int	time[3];
+	long			timestamp;
 	pthread_t		thread;
 	pthread_mutex_t	lfork;
 	pthread_mutex_t	rfork;
-	unsigned int	time[3];
+	pthread_mutex_t	is_eating;
+	long			last_eat;
 	int				eat_amount;
 	int				amount_eaten;
-	long			timestamp;
-	pthread_mutex_t	status_mutex;
-	int				status;
 }	t_philo;
 
 typedef struct s_table
@@ -53,9 +53,9 @@ typedef struct s_table
 // utils.c
 long			ft_atol(const char *nptr);
 unsigned int	get_timenow(void);
+void			putstatus(int i, char *s);
 // routine_utils.c
 void			end_check(t_table *table);
 // routine.c
-void			putstatus(int i, char *s);
 void			*routine(void *data);
 #endif

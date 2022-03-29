@@ -6,7 +6,7 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 11:34:31 by alemarch          #+#    #+#             */
-/*   Updated: 2022/03/29 15:01:53 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/03/29 16:31:59 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	end_program(t_table *table)
 
 	i = 0;
 	while (i < table->nb_philo)
-		pthread_detach(table->philo[i++].thread);
+		pthread_join(table->philo[i++].thread, NULL);
 	i = 0;
 	while (i < table->nb_philo)
 	{
@@ -33,23 +33,22 @@ int	check_status(int i, int ate, t_table *table)
 {
 	while (i < table->nb_philo)
 	{
-		pthread_mutex_lock(&table->philo[i].status_mutex);
-		if (table->philo[i].status)
+		pthread_mutex_lock(&table->philo[i].is_eating);
+		if (get_timenow() - table->philo[i].last_eat
+			> table->time[DIE])
 		{
-			if (table->philo[i].status == DEAD)
-			{
 				putstatus(i, "has died");
+				pthread_mutex_unlock(&table->philo[i].is_eating);
 				return (1);
-			}
-			else
-				ate++;
 		}
+		else if (table->philo[i].eat_amount == table->philo[i].amount_eaten)
+			ate++;
 		if (ate == table->nb_philo)
 		{
-			pthread_mutex_unlock(&table->philo[i].status_mutex);
+			pthread_mutex_unlock(&table->philo[i].is_eating);
 			return (1);
 		}
-		pthread_mutex_unlock(&table->philo[i].status_mutex);
+		pthread_mutex_unlock(&table->philo[i].is_eating);
 		i++;
 	}
 	return (0);

@@ -6,13 +6,13 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 09:54:52 by alemarch          #+#    #+#             */
-/*   Updated: 2022/03/29 14:55:02 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/03/29 16:29:30 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-t_table	*init_table(int ac, char **av)
+static t_table	*init_table(int ac, char **av)
 {
 	t_table	*table;
 
@@ -40,11 +40,10 @@ t_table	*init_table(int ac, char **av)
 	return (table);
 }
 
-void	init_philo(int i, t_table *table)
+static void	init_philo(int i, t_table *table)
 {
 	table->philo[i].id = i;
-	table->philo[i].status = 0;
-	table->philo[i].status_mutex = table->status[i];
+	table->philo[i].is_eating = table->status[i];
 	table->philo[i].lfork = table->forks[i];
 	table->philo[i].time[DIE] = table->time[DIE];
 	table->philo[i].time[EAT] = table->time[EAT];
@@ -52,13 +51,14 @@ void	init_philo(int i, t_table *table)
 	table->philo[i].eat_amount = table->eat_amount;
 	table->philo[i].amount_eaten = 0;
 	table->philo[i].timestamp = table->timestamp;
+	table->philo[i].last_eat = table->timestamp;
 	if (i < table->nb_philo - 1)
 		table->philo[i].rfork = table->forks[i + 1];
 	else
 		table->philo[i].rfork = table->forks[0];
 }
 
-int	sit_philo(t_table *table)
+static int	sit_philo(t_table *table)
 {
 	int		i;
 
@@ -75,7 +75,7 @@ int	sit_philo(t_table *table)
 	return (0);
 }
 
-int	set_table(t_table *table, int i)
+static int	set_table(t_table *table, int i)
 {
 	table->philo = malloc((table->nb_philo + 1) * sizeof(t_philo));
 	if (!table->philo)
