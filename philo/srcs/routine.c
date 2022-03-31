@@ -6,7 +6,7 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 10:43:22 by alemarch          #+#    #+#             */
-/*   Updated: 2022/03/31 15:30:49 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/03/31 15:32:25 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ static void	tryeat(t_philo *philo)
 	pthread_mutex_lock(&philo->rfork);
 	putstatus(philo->id, philo->timestamp, "has taken a fork");
 	pthread_mutex_lock(&philo->is_eating);
+	putstatus(philo->id, philo->timestamp, "is eating");
 	philo->last_eat = get_timenow();
 	pthread_mutex_unlock(&philo->is_eating);
 	philo->amount_eaten++;
