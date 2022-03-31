@@ -6,11 +6,20 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 10:43:22 by alemarch          #+#    #+#             */
-/*   Updated: 2022/03/31 10:05:43 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/03/31 14:23:27 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+static void	ft_usleep(unsigned time)
+{
+	unsigned	now;
+
+	now = get_timenow();
+	while (get_timenow() - now < time)
+		usleep(50);
+}
 
 static void	tryeat(t_philo *philo)
 {
@@ -21,9 +30,9 @@ static void	tryeat(t_philo *philo)
 	putstatus(philo->id, "is eating");
 	pthread_mutex_lock(&philo->is_eating);
 	philo->last_eat = get_timenow();
-	usleep(philo->time[EAT] * 1000);
-	philo->amount_eaten++;
 	pthread_mutex_unlock(&philo->is_eating);
+	philo->amount_eaten++;
+	ft_usleep(philo->time[EAT]);
 	pthread_mutex_unlock(&philo->rfork);
 	pthread_mutex_unlock(&philo->lfork);
 }
@@ -37,7 +46,7 @@ static int	routine_helper(t_philo *philo)
 		return (1);
 	tryeat(philo);
 	putstatus(philo->id, "is sleeping");
-	usleep(philo->time[SLEEP] * 1000);
+	ft_usleep(philo->time[SLEEP]);
 	putstatus(philo->id, "is thinking");
 	return (0);
 }
@@ -45,7 +54,7 @@ static int	routine_helper(t_philo *philo)
 void	only_philo(t_table *table)
 {
 	printf("%u %i has taken a fork\n", get_timenow(), 0);
-	usleep(table->time[DIE] * 1000);
+	ft_usleep(table->time[DIE]);
 	printf("%u %i has died\n", get_timenow(), 0);
 }
 
@@ -55,7 +64,7 @@ void	*routine(void *args)
 
 	philo = (t_philo *)args;
 	if (philo->id % 2 == 0)
-		usleep(philo->time[EAT] / 10);
+		ft_usleep(philo->time[EAT] / 2);
 	while (1)
 		if (routine_helper(philo))
 			break ;

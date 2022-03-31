@@ -6,7 +6,7 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 11:34:31 by alemarch          #+#    #+#             */
-/*   Updated: 2022/03/31 09:55:03 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/03/31 14:27:22 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,9 @@ void	end_check(t_table *table)
 {
 	while (1)
 	{
-		if (check_status(0, 0, table))
-			break ;
+		if (!check_status(0, 0, table))
+			usleep(100);
+		else
+			break;
 	}
 }
