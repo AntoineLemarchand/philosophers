@@ -6,7 +6,7 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 09:54:52 by alemarch          #+#    #+#             */
-/*   Updated: 2022/03/29 16:57:32 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/03/31 10:09:39 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static t_table	*init_table(int ac, char **av)
 	table->time[DIE] = (unsigned int)ft_atol(av[2]);
 	table->time[EAT] = (unsigned int)ft_atol(av[3]);
 	table->time[SLEEP] = (unsigned int)ft_atol(av[4]);
-	if (av[5] && (int)ft_atol(av[5]) <= 0)
+	if (av[5] && check_args(av + 1))
 	{
 		free(table);
 		return (NULL);
@@ -62,15 +62,20 @@ static int	sit_philo(t_table *table)
 	int		i;
 
 	i = 0;
-	while (i < table->nb_philo)
+	if (table->nb_philo != 1)
 	{
-		init_philo(i, table);
-		if (pthread_create(&table->philo[i].thread, NULL, &routine,
-				&table->philo[i]) != 0)
-			return (1);
-		i++;
+		while (i < table->nb_philo)
+		{
+			init_philo(i, table);
+			if (pthread_create(&table->philo[i].thread, NULL, &routine,
+					&table->philo[i]) != 0)
+				return (1);
+			i++;
+		}
+		end_check(table);
 	}
-	end_check(table);
+	else
+		only_philo(table);
 	return (0);
 }
 

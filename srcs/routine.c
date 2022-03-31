@@ -6,7 +6,7 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 10:43:22 by alemarch          #+#    #+#             */
-/*   Updated: 2022/03/29 16:36:51 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/03/31 10:05:43 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ static void	tryeat(t_philo *philo)
 	putstatus(philo->id, "has taken a fork");
 	putstatus(philo->id, "is eating");
 	pthread_mutex_lock(&philo->is_eating);
+	philo->last_eat = get_timenow();
 	usleep(philo->time[EAT] * 1000);
 	philo->amount_eaten++;
-	philo->last_eat = get_timenow();
 	pthread_mutex_unlock(&philo->is_eating);
 	pthread_mutex_unlock(&philo->rfork);
 	pthread_mutex_unlock(&philo->lfork);
@@ -40,6 +40,13 @@ static int	routine_helper(t_philo *philo)
 	usleep(philo->time[SLEEP] * 1000);
 	putstatus(philo->id, "is thinking");
 	return (0);
+}
+
+void	only_philo(t_table *table)
+{
+	printf("%u %i has taken a fork\n", get_timenow(), 0);
+	usleep(table->time[DIE] * 1000);
+	printf("%u %i has died\n", get_timenow(), 0);
 }
 
 void	*routine(void *args)

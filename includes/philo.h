@@ -6,7 +6,7 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 10:00:37 by alemarch          #+#    #+#             */
-/*   Updated: 2022/03/29 16:54:42 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/03/31 10:03:00 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,5 +58,6 @@ int				check_args(char	**av);
 // routine_utils.c
 void			end_check(t_table *table);
 // routine.c
+void			only_philo(t_table *table);
 void			*routine(void *data);
 #endif
