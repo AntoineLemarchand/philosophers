@@ -19,6 +19,7 @@ endef
 define removing
 	@printf ' %s ' $1
 	@$(RM) $1 > /dev/null
+	@printf '\n'
 endef
 
 SRCS			= $(addprefix srcs/, \
@@ -28,16 +29,9 @@ SRCS			= $(addprefix srcs/, \
 			  		main.c \
 					)
 
-BONUS			= $(addprefix srcs/, \
-			  		)
-
 OBJS			= $(SRCS:.c=.o)
 
-BONUS_OBJS		= $(BONUS:.c=.o)
-
 NAME			= philo
-
-NAME_BONUS		= philo_bonus
 
 RM				= rm -f
 
@@ -55,21 +49,14 @@ LIBS			= -lpthread
 ${NAME}:		$(OBJS)
 				$(call finishing,$(NAME), $(OBJS))
 
-${NAME_BONUS}:	$(NAME) $(BONUS_OBJS)
-				$(call finishing,$(NAME_BONUS),$(BONUS_OBJS))
-
 all:			$(NAME)
-
-bonus:			$(NAME_BONUS)
 
 clean:	
 				@echo -n Removing
 				$(call removing,$(OBJS))
-				@echo -n Removing
-				$(call removing,$(BONUS_OBJS))
 
 fclean:			clean
+				@echo -n Removing
 				$(call removing,$(NAME))
-				$(call removing,$(NAME_BONUS))
 
 re:				fclean all
