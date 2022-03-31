@@ -6,7 +6,7 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 09:54:52 by alemarch          #+#    #+#             */
-/*   Updated: 2022/03/31 10:09:39 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/03/31 15:14:11 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static t_table	*init_table(int ac, char **av)
 
 static void	init_philo(int i, t_table *table)
 {
-	table->philo[i].id = i;
+	table->philo[i].id = i + 1;
 	table->philo[i].is_eating = table->status[i];
 	table->philo[i].lfork = table->forks[i];
 	table->philo[i].time[DIE] = table->time[DIE];

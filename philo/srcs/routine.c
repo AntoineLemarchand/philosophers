@@ -6,7 +6,7 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 10:43:22 by alemarch          #+#    #+#             */
-/*   Updated: 2022/03/31 14:23:27 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/03/31 15:14:32 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,14 @@ static void	ft_usleep(unsigned time)
 static void	tryeat(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->lfork);
-	putstatus(philo->id, "has taken a fork");
+	putstatus(philo->id, philo->timestamp, "has taken a fork");
 	pthread_mutex_lock(&philo->rfork);
-	putstatus(philo->id, "has taken a fork");
-	putstatus(philo->id, "is eating");
+	putstatus(philo->id, philo->timestamp, "has taken a fork");
 	pthread_mutex_lock(&philo->is_eating);
 	philo->last_eat = get_timenow();
 	pthread_mutex_unlock(&philo->is_eating);
 	philo->amount_eaten++;
 	ft_usleep(philo->time[EAT]);
-	pthread_mutex_unlock(&philo->rfork);
-	pthread_mutex_unlock(&philo->lfork);
 }
 
 static int	routine_helper(t_philo *philo)
@@ -45,17 +42,19 @@ static int	routine_helper(t_philo *philo)
 		&& philo->amount_eaten == philo->eat_amount)
 		return (1);
 	tryeat(philo);
-	putstatus(philo->id, "is sleeping");
+	pthread_mutex_unlock(&philo->rfork);
+	pthread_mutex_unlock(&philo->lfork);
+	putstatus(philo->id, philo->timestamp, "is sleeping");
 	ft_usleep(philo->time[SLEEP]);
-	putstatus(philo->id, "is thinking");
+	putstatus(philo->id, philo->timestamp, "is thinking");
 	return (0);
 }
 
 void	only_philo(t_table *table)
 {
-	printf("%u %i has taken a fork\n", get_timenow(), 0);
+	putstatus(0, table->timestamp, "is thinking");
 	ft_usleep(table->time[DIE]);
-	printf("%u %i has died\n", get_timenow(), 0);
+	putstatus(0, table->timestamp, "has died");
 }
 
 void	*routine(void *args)
