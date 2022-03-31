@@ -23,6 +23,9 @@ define removing
 endef
 
 SRCS			= $(addprefix srcs/, \
+				  	utils.c \
+				  	routine_utils.c \
+				  	routine.c \
 			  		main.c \
 					)
 
@@ -47,8 +50,6 @@ ${NAME}:		$(OBJS)
 				$(call finishing,$(NAME), $(OBJS))
 
 all:			$(NAME)
-
-bonus:			$(NAME)_bonus
 
 clean:	
 				@echo -n Removing
