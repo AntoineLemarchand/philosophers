@@ -6,7 +6,7 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 10:43:22 by alemarch          #+#    #+#             */
-/*   Updated: 2022/03/31 15:14:32 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/03/31 15:30:49 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,7 @@
 
 static void	ft_usleep(unsigned time)
 {
-	unsigned	now;
-
-	now = get_timenow();
-	while (get_timenow() - now < time)
-		usleep(50);
+	usleep(time * 1000);
 }
 
 static void	tryeat(t_philo *philo)
@@ -32,6 +28,8 @@ static void	tryeat(t_philo *philo)
 	pthread_mutex_unlock(&philo->is_eating);
 	philo->amount_eaten++;
 	ft_usleep(philo->time[EAT]);
+	pthread_mutex_unlock(&philo->rfork);
+	pthread_mutex_unlock(&philo->lfork);
 }
 
 static int	routine_helper(t_philo *philo)
@@ -42,8 +40,6 @@ static int	routine_helper(t_philo *philo)
 		&& philo->amount_eaten == philo->eat_amount)
 		return (1);
 	tryeat(philo);
-	pthread_mutex_unlock(&philo->rfork);
-	pthread_mutex_unlock(&philo->lfork);
 	putstatus(philo->id, philo->timestamp, "is sleeping");
 	ft_usleep(philo->time[SLEEP]);
 	putstatus(philo->id, philo->timestamp, "is thinking");
@@ -63,7 +59,7 @@ void	*routine(void *args)
 
 	philo = (t_philo *)args;
 	if (philo->id % 2 == 0)
-		ft_usleep(philo->time[EAT] / 2);
+		ft_usleep(philo->time[EAT]);
 	while (1)
 		if (routine_helper(philo))
 			break ;
