@@ -6,7 +6,7 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 10:43:22 by alemarch          #+#    #+#             */
-/*   Updated: 2022/04/01 09:34:47 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/04/01 12:15:11 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ static void	ft_usleep(unsigned time)
 
 static void	tryeat(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->lfork);
+	pthread_mutex_lock(philo->lfork);
 	putstatus(philo->id, philo->timestamp, "has taken a fork");
-	pthread_mutex_lock(&philo->rfork);
+	pthread_mutex_lock(philo->rfork);
 	putstatus(philo->id, philo->timestamp, "has taken a fork");
 	pthread_mutex_lock(&philo->is_eating);
 	putstatus(philo->id, philo->timestamp, "is eating");
@@ -33,15 +33,15 @@ static void	tryeat(t_philo *philo)
 	pthread_mutex_unlock(&philo->is_eating);
 	philo->amount_eaten++;
 	ft_usleep(philo->time[EAT]);
-	pthread_mutex_unlock(&philo->rfork);
-	pthread_mutex_unlock(&philo->lfork);
+	pthread_mutex_unlock(philo->rfork);
+	pthread_mutex_unlock(philo->lfork);
 }
 
 static int	routine_helper(t_philo *philo)
 {
 	if (get_timenow() - philo->last_eat >= philo->time[DIE])
 		return (1);
-	else if (philo->amount_eaten
+	else if (philo->amount_eaten != -1
 		&& philo->amount_eaten == philo->eat_amount)
 		return (1);
 	tryeat(philo);
@@ -64,7 +64,7 @@ void	*routine(void *args)
 
 	philo = (t_philo *)args;
 	if (philo->id % 2 == 0)
-		ft_usleep(philo->time[EAT] / 2);
+		ft_usleep(philo->time[EAT]);
 	while (1)
 		if (routine_helper(philo))
 			break ;

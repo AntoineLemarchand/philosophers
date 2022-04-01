@@ -6,7 +6,7 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 10:00:37 by alemarch          #+#    #+#             */
-/*   Updated: 2022/03/31 14:57:01 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/04/01 12:14:10 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ typedef struct s_philo
 	unsigned int	time[3];
 	long			timestamp;
 	pthread_t		thread;
-	pthread_mutex_t	lfork;
-	pthread_mutex_t	rfork;
+	pthread_mutex_t	*lfork;
+	pthread_mutex_t	*rfork;
 	pthread_mutex_t	is_eating;
 	long			last_eat;
 	int				eat_amount;

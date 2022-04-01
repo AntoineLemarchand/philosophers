@@ -6,7 +6,7 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 11:57:03 by alemarch          #+#    #+#             */
-/*   Updated: 2022/03/31 14:57:37 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/04/01 12:11:40 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	check_args(char **av)
 
 void	putstatus(int i, unsigned int timestamp, char *s)
 {
-	printf("%-10u %-3i %s\n", get_timenow() - timestamp, i, s);
+	printf("%-10u philo %-3i %s\n", get_timenow() - timestamp, i, s);
 }
 
 unsigned int	get_timenow(void)

@@ -6,7 +6,7 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 09:54:52 by alemarch          #+#    #+#             */
-/*   Updated: 2022/04/01 09:16:32 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/04/01 12:14:31 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,11 @@ static void	init_philo(int i, t_table *table)
 	table->philo[i].amount_eaten = 0;
 	table->philo[i].timestamp = table->timestamp;
 	table->philo[i].last_eat = table->timestamp;
-	if (i > 0)
-		table->philo[i].lfork = table->forks[i];
+	table->philo[i].lfork = &table->forks[i];
+	if (i == table->nb_philo - 1)
+		table->philo[i].rfork = &table->forks[0];
 	else
-		table->philo[i].lfork = table->forks[table->nb_philo - 1];
-	if (i < table->nb_philo - 1)
-		table->philo[i].rfork = table->forks[i + 1];
-	else
-		table->philo[i].rfork = table->forks[0];
+		table->philo[i].rfork = &table->forks[i + 1];
 }
 
 static int	sit_philo(t_table *table)
@@ -68,8 +65,10 @@ static int	sit_philo(t_table *table)
 	if (table->nb_philo != 1)
 	{
 		while (i < table->nb_philo)
+			init_philo(i++, table);
+		i = 0;
+		while (i < table->nb_philo)
 		{
-			init_philo(i, table);
 			if (pthread_create(&table->philo[i].thread, NULL, &routine,
 					&table->philo[i]) != 0)
 				return (1);
@@ -84,7 +83,7 @@ static int	sit_philo(t_table *table)
 
 static int	set_table(t_table *table, int i)
 {
-	table->philo = malloc((table->nb_philo + 1) * sizeof(t_philo));
+	table->philo = malloc((table->nb_philo) * sizeof(t_philo));
 	if (!table->philo)
 		return (1);
 	table->forks = malloc(table->nb_philo * sizeof(pthread_mutex_t));
