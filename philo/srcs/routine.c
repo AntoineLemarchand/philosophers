@@ -6,7 +6,7 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 10:43:22 by alemarch          #+#    #+#             */
-/*   Updated: 2022/03/31 15:32:25 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/04/01 09:34:47 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,11 @@
 
 static void	ft_usleep(unsigned time)
 {
-	usleep(time * 1000);
+	unsigned	now;
+
+	now = get_timenow();
+	while (get_timenow() - now < time)
+		usleep(10);
 }
 
 static void	tryeat(t_philo *philo)
@@ -49,7 +53,7 @@ static int	routine_helper(t_philo *philo)
 
 void	only_philo(t_table *table)
 {
-	putstatus(0, table->timestamp, "is thinking");
+	putstatus(0, table->timestamp, "has taken a fork");
 	ft_usleep(table->time[DIE]);
 	putstatus(0, table->timestamp, "has died");
 }
@@ -60,7 +64,7 @@ void	*routine(void *args)
 
 	philo = (t_philo *)args;
 	if (philo->id % 2 == 0)
-		ft_usleep(philo->time[EAT]);
+		ft_usleep(philo->time[EAT] / 2);
 	while (1)
 		if (routine_helper(philo))
 			break ;

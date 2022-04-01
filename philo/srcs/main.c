@@ -6,7 +6,7 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 09:54:52 by alemarch          #+#    #+#             */
-/*   Updated: 2022/03/31 15:29:32 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/04/01 09:16:32 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ static t_table	*init_table(int ac, char **av)
 		return (NULL);
 	}
 	table->nb_philo = (int)ft_atol(av[1]);
-	table->time[DIE] = (unsigned int)ft_atol(av[2]);
-	table->time[EAT] = (unsigned int)ft_atol(av[3]);
-	table->time[SLEEP] = (unsigned int)ft_atol(av[4]);
+	table->time[DIE] = (unsigned)ft_atol(av[2]);
+	table->time[EAT] = (unsigned)ft_atol(av[3]);
+	table->time[SLEEP] = (unsigned)ft_atol(av[4]);
 	if (av[5] && check_args(av + 1))
 	{
 		free(table);
@@ -50,7 +50,10 @@ static void	init_philo(int i, t_table *table)
 	table->philo[i].amount_eaten = 0;
 	table->philo[i].timestamp = table->timestamp;
 	table->philo[i].last_eat = table->timestamp;
-	table->philo[i].lfork = table->forks[i];
+	if (i > 0)
+		table->philo[i].lfork = table->forks[i];
+	else
+		table->philo[i].lfork = table->forks[table->nb_philo - 1];
 	if (i < table->nb_philo - 1)
 		table->philo[i].rfork = table->forks[i + 1];
 	else
