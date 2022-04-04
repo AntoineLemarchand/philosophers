@@ -6,7 +6,7 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 09:54:52 by alemarch          #+#    #+#             */
-/*   Updated: 2022/04/01 12:14:31 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/04/04 11:03:26 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ static int	sit_philo(t_table *table)
 	}
 	else
 		only_philo(table);
+	end_program(table);
 	return (0);
 }
 
@@ -121,6 +122,7 @@ int	main(int ac, char **av)
 	}
 	free(table->philo);
 	free(table->forks);
+	free(table->status);
 	free(table);
 	return (0);
 }

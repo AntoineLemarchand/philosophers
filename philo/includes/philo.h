@@ -6,7 +6,7 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 10:00:37 by alemarch          #+#    #+#             */
-/*   Updated: 2022/04/01 12:14:10 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/04/04 11:03:57 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ unsigned int	get_timenow(void);
 void			putstatus(int i, unsigned int timestamp, char *s);
 int				check_args(char	**av);
 // routine_utils.c
+void			end_program(t_table *table);
 void			end_check(t_table *table);
 // routine.c
 void			only_philo(t_table *table);
