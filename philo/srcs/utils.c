@@ -6,7 +6,7 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 11:57:03 by alemarch          #+#    #+#             */
-/*   Updated: 2022/04/01 12:11:40 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/04/05 16:00:41 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,17 @@ int	check_args(char **av)
 	return (0);
 }
 
-void	putstatus(int i, unsigned int timestamp, char *s)
+void	putstatus(t_philo *philo, char *msg)
 {
-	printf("%-10u philo %-3i %s\n", get_timenow() - timestamp, i, s);
+	pthread_mutex_lock(philo->status);
+	if (!philo->dead)
+	{
+		pthread_mutex_lock(philo->print);
+		printf("%-10ld philo %-3i %s\n",
+			get_timenow() - philo->timestamp, philo->id, msg);
+		pthread_mutex_unlock(philo->print);
+	}
+	pthread_mutex_unlock(philo->status);
 }
 
 unsigned int	get_timenow(void)

@@ -6,7 +6,7 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 10:43:22 by alemarch          #+#    #+#             */
-/*   Updated: 2022/04/01 13:45:07 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/04/05 16:30:48 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,38 +24,40 @@ static void	ft_usleep(unsigned int time)
 static void	tryeat(t_philo *philo)
 {
 	pthread_mutex_lock(philo->lfork);
-	putstatus(philo->id, philo->timestamp, "has taken a fork");
+	putstatus(philo, "has taken a fork");
 	pthread_mutex_lock(philo->rfork);
-	putstatus(philo->id, philo->timestamp, "has taken a fork");
-	pthread_mutex_lock(&philo->is_eating);
-	putstatus(philo->id, philo->timestamp, "is eating");
+	putstatus(philo, "has taken a fork");
+	putstatus(philo, "is eating");
+	pthread_mutex_lock(philo->status);
 	philo->last_eat = get_timenow();
-	pthread_mutex_unlock(&philo->is_eating);
 	philo->amount_eaten++;
+	pthread_mutex_unlock(philo->status);
 	ft_usleep(philo->time[EAT]);
 	pthread_mutex_unlock(philo->rfork);
 	pthread_mutex_unlock(philo->lfork);
+	putstatus(philo, "is sleeping");
+	ft_usleep(philo->time[SLEEP]);
 }
 
 static int	routine_helper(t_philo *philo)
 {
-	if (get_timenow() - philo->last_eat >= philo->time[DIE])
+	pthread_mutex_lock(philo->status);
+	if (philo->dead)
+	{
+		pthread_mutex_unlock(philo->status);
 		return (1);
-	else if (philo->amount_eaten != -1
-		&& philo->amount_eaten == philo->eat_amount)
-		return (1);
+	}
+	pthread_mutex_unlock(philo->status);
 	tryeat(philo);
-	putstatus(philo->id, philo->timestamp, "is sleeping");
-	ft_usleep(philo->time[SLEEP]);
-	putstatus(philo->id, philo->timestamp, "is thinking");
+	putstatus(philo, "is thinking");
 	return (0);
 }
 
 void	only_philo(t_table *table)
 {
-	putstatus(0, table->timestamp, "has taken a fork");
+	putstatus(table->philo, "has taken a fork");
 	ft_usleep(table->time[DIE]);
-	putstatus(0, table->timestamp, "has died");
+	putstatus(table->philo, "has died");
 }
 
 void	*routine(void *args)

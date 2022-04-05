@@ -6,7 +6,7 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 10:00:37 by alemarch          #+#    #+#             */
-/*   Updated: 2022/04/04 11:03:57 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/04/05 16:09:54 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,12 @@ typedef struct s_philo
 	pthread_t		thread;
 	pthread_mutex_t	*lfork;
 	pthread_mutex_t	*rfork;
-	pthread_mutex_t	is_eating;
+	pthread_mutex_t	*status;
+	pthread_mutex_t	*print;
 	long			last_eat;
 	int				eat_amount;
 	int				amount_eaten;
+	int				dead;
 }	t_philo;
 
 typedef struct s_table
@@ -44,6 +46,7 @@ typedef struct s_table
 	t_philo			*philo;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	*status;
+	pthread_mutex_t	print;
 	int				nb_philo;
 	unsigned int	time[3];
 	int				eat_amount;
@@ -53,7 +56,7 @@ typedef struct s_table
 // utils.c
 long			ft_atol(const char *nptr);
 unsigned int	get_timenow(void);
-void			putstatus(int i, unsigned int timestamp, char *s);
+void			putstatus(t_philo *philo, char *msg);
 int				check_args(char	**av);
 // routine_utils.c
 void			end_program(t_table *table);
