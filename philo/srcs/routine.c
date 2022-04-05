@@ -6,7 +6,7 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 10:43:22 by alemarch          #+#    #+#             */
-/*   Updated: 2022/04/05 16:30:48 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/04/05 16:35:59 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	ft_usleep(unsigned int time)
 
 	now = get_timenow();
 	while (get_timenow() - now < time)
-		usleep(10);
+		usleep(100);
 }
 
 static void	tryeat(t_philo *philo)

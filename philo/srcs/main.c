@@ -6,7 +6,7 @@
 /*   By: alemarch <alemarch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 09:54:52 by alemarch          #+#    #+#             */
-/*   Updated: 2022/04/05 16:19:25 by alemarch         ###   ########.fr       */
+/*   Updated: 2022/04/05 16:35:19 by alemarch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,6 @@ static int	sit_philo(t_table *table)
 			return (1);
 		i++;
 	}
-	if (table->nb_philo != 1)
-		end_check(table);
-	end_program(table);
 	return (0);
 }
 
@@ -106,8 +103,6 @@ static int	set_table(t_table *table, int i)
 		pthread_mutex_init(&table->status[i++], NULL);
 	}
 	pthread_mutex_init(&table->print, NULL);
-	if (sit_philo(table))
-		return (1);
 	return (0);
 }
 
@@ -121,6 +116,11 @@ int	main(int ac, char **av)
 		write(2, "Argument error\n", 15);
 		return (22);
 	}
+	if (sit_philo(table))
+		return (1);
+	if (table->nb_philo != 1)
+		end_check(table);
+	end_program(table);
 	free(table->philo);
 	free(table->forks);
 	free(table->status);
