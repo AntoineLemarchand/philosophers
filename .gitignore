@@ -1,0 +1,4 @@
+philo/philo
+*.o
+*.swp
+*.swo
